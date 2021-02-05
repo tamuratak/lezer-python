@@ -1,4 +1,4 @@
-import {ExternalTokenizer} from "lezer"
+import {ExternalTokenizer, Input} from "lezer"
 import {
   newline as newlineToken, eof, newlineEmpty, newlineBracketed, continueBody, endBody,
   _else, _elif, _except, _finally,
@@ -6,7 +6,7 @@ import {
   DictionaryExpression, DictionaryComprehensionExpression, SetExpression, SetComprehensionExpression,
   compoundStatement,
   printKeyword
-} from "./parser.terms.js"
+} from "./parser.terms"
 
 const newline = 10, carriageReturn = 13, space = 32, tab = 9, hash = 35, parenOpen = 40, dot = 46
 
@@ -23,30 +23,34 @@ const caches = new WeakMap
 // indentation, since that needs to be available alongside a previous
 // indentation position at the same level.
 class Cache {
+  last: number
+  lastIndent: number
+  prev: number[]
+
   constructor() {
     this.last = this.lastIndent = -1
     this.prev = []
   }
 
-  get(pos) {
+  get(pos: number) {
     if (this.last == pos) return this.lastIndent
     for (let i = 0; i < this.prev.length; i++) if (this.prev[i] == pos) return i
     return -1
   }
 
-  set(pos, indent) {
+  set(pos: number, indent: number) {
     if (pos == this.last) return
     if (this.last > -1) this.setPrev(this.last, this.lastIndent)
     this.last = pos
     this.lastIndent = indent
   }
 
-  setPrev(pos, indent) {
+  setPrev(pos: number, indent: number) {
     while (this.prev.length < indent) this.prev.push(-1)
     this.prev[indent] = pos
   }
 
-  static for(input) {
+  static for(input: Input) {
     let found = caches.get(input)
     if (!found) caches.set(input, found = new Cache)
     return found
@@ -55,7 +59,7 @@ class Cache {
 
 const maxIndent = 50
 
-function getIndent(input, pos) {
+function getIndent(input: Input, pos: number) {
   let cache = Cache.for(input), found = cache.get(pos)
   if (found > -1) return found
 
@@ -114,7 +118,7 @@ export const bodyContinue = new ExternalTokenizer((input, token, stack) => {
   token.accept(indentHere <= parentIndent ? endBody : continueBody, token.start)
 }, {contextual: true, fallback: true})
 
-let keywords = {else: _else, elif: _elif, except: _except, finally: _finally}
+let keywords: { [k: string]: number } = {else: _else, elif: _elif, except: _except, finally: _finally}
 
 // Matches else/elif/except/finally, but only when at same indentation
 // as their parent statement

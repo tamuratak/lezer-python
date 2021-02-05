@@ -23,8 +23,8 @@
     "lezer": "^0.13.0"
   },
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/lezer-parser/python.git"
+    "type": "git",
+    "url": "https://github.com/lezer-parser/python.git"
   },
   "scripts": {
     "build": "lezer-generator src/python.grammar -o src/parser && rollup -c",

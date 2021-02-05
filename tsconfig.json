@@ -5,7 +5,8 @@
         "lib": [
             "es2017"
         ],
-        "module": "commonjs",
+        "module": "ESNext",
+        "moduleResolution": "Node",
         "noFallthroughCasesInSwitch": true,
         "noImplicitAny": true,
         "noImplicitReturns": true,
@@ -13,7 +14,8 @@
         "noUnusedLocals": true,
         "noUnusedParameters": true,
         "outDir": "src",
-        "rootDir": "src",
+        "sourceRoot": "src",
+        "rootDir": ".",
         "sourceMap": true,
         "strictNullChecks": true,
         "target": "es2017"
