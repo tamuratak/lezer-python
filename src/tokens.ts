@@ -6,7 +6,7 @@ import {
   DictionaryExpression, DictionaryComprehensionExpression, SetExpression, SetComprehensionExpression,
   compoundStatement,
   printKeyword
-} from "./parser.terms"
+} from "./parser.terms.js"
 
 const newline = 10, carriageReturn = 13, space = 32, tab = 9, hash = 35, parenOpen = 40, dot = 46
 
