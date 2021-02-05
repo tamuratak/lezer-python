@@ -13,7 +13,7 @@
         "noImplicitThis": true,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
-        "outDir": "src",
+        "outDir": ".",
         "sourceRoot": "src",
         "rootDir": ".",
         "sourceMap": true,
